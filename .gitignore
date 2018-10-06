@@ -1,2 +1,4 @@
 /node_modules
+/virtenv
 .env
+focus_code_map.xlsx
