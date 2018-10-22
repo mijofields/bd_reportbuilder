@@ -14,6 +14,7 @@ from datetime import date
 def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", outdir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/report"):
     
     dayOfMonth = (31,28,31,30,31,30,31,31,30,31,30,31)
+    leapYear = (31,29,31,30,31,30,31,31,30,31,30,31)
     
     
     if not os.path.exists(indir):           
@@ -32,11 +33,25 @@ def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", o
         if endMonth > 0 and endMonth < 13:
             inrange = True
         
-    endYear = input("Please enter a year, eg. 2018: ")
-    endYear = endYear.strip()
-    endYear = int(endYear)
+    
+    
+    
+    isAYear = False
+    
+    while not isAYear:
+        endYear = input("Please enter a year, eg. 2018: ")
+        endYear = endYear.strip()        
+        if len(endYear) == 4:
+            endYear = int(endYear)
+            isAYear = True
+    
+    if endYear%4 == 0:
+        endDate = date(endYear, endMonth, leapYear[endMonth-1])
+        print("its a leap year!")
+    elif endYear%4 != 0:
+        endDate = date(endYear, endMonth, dayOfMonth[endMonth-1])
    
-    endDate = date(endYear, endMonth, dayOfMonth[endMonth-1])
+    
     startDate = date(endYear-1, endMonth+1, dayOfMonth[endMonth])
     
     print("To confirm the following will be calculated")
