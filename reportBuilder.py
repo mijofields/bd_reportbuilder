@@ -23,13 +23,15 @@ def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", o
     firmName = input("Enter the Firm Name: ")
     firmName = firmName.strip()
     
-    endMonth = input("Please enter a month by number, eg. for January use 1: ")
-    endMonth = endMonth.strip()
-    endMonth = int(endMonth)
-    while not endMonth > 0 and endMonth < 13:
-        endMonth = input("Please enter a month between 1 for January and 12 for December: ")
+    inrange = False
+    
+    while not inrange:
+        endMonth = input("Please enter a month by number, eg. for January use 1, December 12: ")
         endMonth = endMonth.strip()
         endMonth = int(endMonth)
+        if endMonth > 0 and endMonth < 13:
+            inrange = True
+        
     endYear = input("Please enter a year, eg. 2018: ")
     endYear = endYear.strip()
     endYear = int(endYear)
