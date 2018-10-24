@@ -13,8 +13,7 @@ from datetime import date
 
 def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", outdir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/report"):
     
-    dayOfMonth = (31,28,31,30,31,30,31,31,30,31,30,31)
-    leapYear = (31,29,31,30,31,30,31,31,30,31,30,31)
+   
     
     
     if not os.path.exists(indir):           
@@ -24,19 +23,16 @@ def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", o
     firmName = input("Enter the Firm Name: ")
     firmName = firmName.strip()
     
-    inrange = False
+    monthInRange = False
+    isAYear = False
     
-    while not inrange:
-        endMonth = input("Please enter a month by number, eg. for January use 1, December 12: ")
-        endMonth = endMonth.strip()
+    endMonth = input("Please enter a month by number, eg. for January use 1, December 12: ")
+    endMonth = endMonth.strip()
+    while not monthInRange:
+        
         endMonth = int(endMonth)
         if endMonth > 0 and endMonth < 13:
-            inrange = True
-        
-    
-    
-    
-    isAYear = False
+            monthInRange = True
     
     while not isAYear:
         endYear = input("Please enter a year, eg. 2018: ")
@@ -44,29 +40,78 @@ def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", o
         if len(endYear) == 4:
             endYear = int(endYear)
             isAYear = True
-    
-    if endYear%4 == 0:
-        endDate = date(endYear, endMonth, leapYear[endMonth-1])
-        print("its a leap year!")
-    elif endYear%4 != 0:
-        endDate = date(endYear, endMonth, dayOfMonth[endMonth-1])
-   
-    
-    startDate = date(endYear-1, endMonth+1, dayOfMonth[endMonth])
-    
+            
     print("To confirm the following will be calculated")
     print("Firm:", firmName)
     print("End Date:", endDate)
     print("Start Date:", startDate)
     
-  
 
+  
+    
+   
     
     
     
     if not os.path.exists(outdir):           
         os.makedirs(outdir)
     os.chdir(outdir)
+    
+    
+def relevantDates (endMonth, endYear):
+    
+    endOfMonth = (31,28,31,30,31,30,31,31,30,31,30,31)
+    leapYearEndOfMonth = (31,29,31,30,31,30,31,31,30,31,30,31)
+    endMonth = int(endMonth)
+    endYear = int(endYear)
+    print("end month: ", endMonth)
+    print("end year: ", endYear)
+    print(leapYearEndOfMonth[endMonth-1])
+    print(endOfMonth[endMonth-1])
+    
+    if endYear%4 == 0:
+        endDate = date(endYear, endMonth, leapYearEndOfMonth[endMonth-1])
+        endDatePrior = date(endYear - 1, endMonth, endOfMonth[endMonth-1])
+    elif (endYear-1) % 4 == 0:
+        endDate = date(endYear, endMonth, endOfMonth[endMonth-1])
+        endDatePrior = date(endYear - 1, endMonth, leapYearEndOfMonth[endMonth-1])
+    else:
+        endDate = date(endYear, endMonth, endOfMonth[endMonth-1])
+        endDatePrior = date(endYear -1 , endMonth, endOfMonth[endMonth-1])
+    
+    if endMonth == 12:
+        startMonth = 1
+        startYear = endYear
+        financialYearEnd = endDate
+    else:
+        startMonth = endMonth + 1
+        startYear = endYear - 1
+        financialYearEnd = date(endYear - 1, 12, 31)
+        
+    startDate = date(startYear, startMonth,1)
+    startDatePrior = date(startYear - 1, startMonth, 1)
+    
+    
+    relevantDates = {
+            
+            "YTD Start": startDate,
+            "YTD End": endDate,
+            "YTD Prior Start": startDatePrior,
+            "YTD Prior End": endDatePrior,
+            "FYE": financialYearEnd
+            
+            }
+    
+    print(relevantDates)
+    return relevantDates
+   
+    
+
+    
+ 
+        
+    
+
 
     
     
