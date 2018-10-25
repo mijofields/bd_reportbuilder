@@ -14,24 +14,33 @@ from dateutil.relativedelta import relativedelta as rd
 
 def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", outdir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/report"):
     
-   
-    
-    
     if not os.path.exists(indir):           
         os.makedirs(indir)
     os.chdir(indir)
+   
+    if not os.path.exists(outdir):           
+        os.makedirs(outdir)
+    os.chdir(outdir)
+    
+
+def inputValidation ():
+
+    monthInRange = False
+    isAYear = False
     
     firmName = input("Enter the Firm Name: ")
     firmName = firmName.strip()
     
-    monthInRange = False
-    isAYear = False
+    """
+    Firm name will be selected via a drop down called from db generated firm list
     
-    endMonth = input("Please enter a month by number, eg. for January use 1, December 12: ")
-    endMonth = endMonth.strip()
+    """
+    
     while not monthInRange:
-        
+        endMonth = input("Please enter a month by number, eg. for January use 1, December 12: ")
+        endMonth = endMonth.strip()
         endMonth = int(endMonth)
+                    
         if endMonth > 0 and endMonth < 13:
             monthInRange = True
     
@@ -40,23 +49,14 @@ def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", o
         endYear = endYear.strip()        
         if len(endYear) == 4:
             endYear = int(endYear)
-            isAYear = True
-            
-    print("To confirm the following will be calculated")
+            isAYear = True    
+    
+    print("To confirm the following will be calculated:")
     print("Firm:", firmName)
-    print("End Date:", endDate)
-    print("Start Date:", startDate)
-    
-
-  
-    
-   
+    print("End Month:", endMonth)
+    print("End Year:", endYear)
     
     
-    
-    if not os.path.exists(outdir):           
-        os.makedirs(outdir)
-    os.chdir(outdir)
     
     
 def relevantDates (endMonth, endYear, yearEnd=12):
@@ -89,34 +89,36 @@ def relevantDates (endMonth, endYear, yearEnd=12):
         fiscalYE = endDate
         fiscalYEm1 = endDatePrior
         fiscalYEm2 = endDatePrior + rd(years=-1)
+        note = "no YTD data to be displayed"
         
     elif endMonth < yearEnd:
         fiscalYE = date(endYear-1, yearEnd, endOfMonth[yearEnd-1])
         fiscalYEm1 = fiscalYE + rd(years=-1)
         fiscalYEm2 = fiscalYE + rd(years=-2)
+        note = "YTD data to be displayed"
     
     else:
         fiscalYE = date(endYear, yearEnd, endOfMonth[yearEnd-1])
         fiscalYEm1 = fiscalYE + rd(years=-1)
         fiscalYEm2 = fiscalYE + rd(years=-2)
-        
+        note = "YTD data to be displayed"
    
     
     
-    relevantDates = {
-            
+    relevantDates = {            
             "YTD Start": startDate,
             "YTD End": endDate,
             "YTD Prior Start": startDatePrior,
             "YTD Prior End": endDatePrior,
             "FYE": fiscalYE,
             "FYE-1": fiscalYEm1,
-            "FYE-2": fiscalYEm2          
-            
+            "FYE-2": fiscalYEm2,
+            "note": note            
             }
     
+    
     return relevantDates
-   
+    
     
 
     
