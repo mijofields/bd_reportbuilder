@@ -9,6 +9,7 @@ import pandas
 import seaborn as sns
 import os
 from datetime import date
+from dateutil.relativedelta import relativedelta as rd
 
 
 def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", outdir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/report"):
@@ -58,38 +59,48 @@ def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", o
     os.chdir(outdir)
     
     
-def relevantDates (endMonth, endYear):
+def relevantDates (endMonth, endYear, yearEnd=12):
     
     endOfMonth = (31,28,31,30,31,30,31,31,30,31,30,31)
     leapYearEndOfMonth = (31,29,31,30,31,30,31,31,30,31,30,31)
-    endMonth = int(endMonth)
-    endYear = int(endYear)
-    print("end month: ", endMonth)
-    print("end year: ", endYear)
-    print(leapYearEndOfMonth[endMonth-1])
-    print(endOfMonth[endMonth-1])
+
     
-    if endYear%4 == 0:
+    if endYear % 4 == 0:
         endDate = date(endYear, endMonth, leapYearEndOfMonth[endMonth-1])
-        endDatePrior = date(endYear - 1, endMonth, endOfMonth[endMonth-1])
+        endDatePrior = endDate + rd(years=-1)
     elif (endYear-1) % 4 == 0:
-        endDate = date(endYear, endMonth, endOfMonth[endMonth-1])
         endDatePrior = date(endYear - 1, endMonth, leapYearEndOfMonth[endMonth-1])
+        endDate = endDatePrior + rd(years=+1)
     else:
         endDate = date(endYear, endMonth, endOfMonth[endMonth-1])
-        endDatePrior = date(endYear -1 , endMonth, endOfMonth[endMonth-1])
+        endDatePrior = endDate + rd(years=-1)
     
     if endMonth == 12:
         startMonth = 1
         startYear = endYear
-        financialYearEnd = endDate
     else:
         startMonth = endMonth + 1
         startYear = endYear - 1
-        financialYearEnd = date(endYear - 1, 12, 31)
         
-    startDate = date(startYear, startMonth,1)
-    startDatePrior = date(startYear - 1, startMonth, 1)
+    startDate = date(startYear, startMonth, 1)
+    startDatePrior = startDate + rd(years=-1)
+    
+    if endMonth == yearEnd:
+        fiscalYE = endDate
+        fiscalYEm1 = endDatePrior
+        fiscalYEm2 = endDatePrior + rd(years=-1)
+        
+    elif endMonth < yearEnd:
+        fiscalYE = date(endYear-1, yearEnd, endOfMonth[yearEnd-1])
+        fiscalYEm1 = fiscalYE + rd(years=-1)
+        fiscalYEm2 = fiscalYE + rd(years=-2)
+    
+    else:
+        fiscalYE = date(endYear, yearEnd, endOfMonth[yearEnd-1])
+        fiscalYEm1 = fiscalYE + rd(years=-1)
+        fiscalYEm2 = fiscalYE + rd(years=-2)
+        
+   
     
     
     relevantDates = {
@@ -98,11 +109,12 @@ def relevantDates (endMonth, endYear):
             "YTD End": endDate,
             "YTD Prior Start": startDatePrior,
             "YTD Prior End": endDatePrior,
-            "FYE": financialYearEnd
+            "FYE": fiscalYE,
+            "FYE-1": fiscalYEm1,
+            "FYE-2": fiscalYEm2          
             
             }
     
-    print(relevantDates)
     return relevantDates
    
     
