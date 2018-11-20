@@ -12,7 +12,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta as rd
 
 
-def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", outdir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/report"):
+def makeDirs (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", outdir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/reports"):
     
     if not os.path.exists(indir):           
         os.makedirs(indir)
@@ -20,7 +20,8 @@ def TableBuild (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", o
    
     if not os.path.exists(outdir):           
         os.makedirs(outdir)
-    os.chdir(outdir)
+    
+    print('Directories established')
     
 
 def inputValidation ():
@@ -59,7 +60,7 @@ def inputValidation ():
     
     
     
-def relevantDates (endMonth, endYear, yearEnd=12):
+def MakeRelevantDates (endMonth, endYear, yearEnd=12):
     
     endOfMonth = (31,28,31,30,31,30,31,31,30,31,30,31)
     leapYearEndOfMonth = (31,29,31,30,31,30,31,31,30,31,30,31)
@@ -89,19 +90,19 @@ def relevantDates (endMonth, endYear, yearEnd=12):
         fiscalYE = endDate
         fiscalYEm1 = endDatePrior
         fiscalYEm2 = endDatePrior + rd(years=-1)
-        note = "no YTD data to be displayed"
+        displayYTD = False
         
     elif endMonth < yearEnd:
         fiscalYE = date(endYear-1, yearEnd, endOfMonth[yearEnd-1])
         fiscalYEm1 = fiscalYE + rd(years=-1)
         fiscalYEm2 = fiscalYE + rd(years=-2)
-        note = "YTD data to be displayed"
+        displayYTD = True
     
     else:
         fiscalYE = date(endYear, yearEnd, endOfMonth[yearEnd-1])
         fiscalYEm1 = fiscalYE + rd(years=-1)
         fiscalYEm2 = fiscalYE + rd(years=-2)
-        note = "YTD data to be displayed"
+        displayYTD = True
    
     
     
@@ -113,11 +114,11 @@ def relevantDates (endMonth, endYear, yearEnd=12):
             "FYE": fiscalYE,
             "FYE-1": fiscalYEm1,
             "FYE-2": fiscalYEm2,
-            "note": note            
+            "Display YTD": displayYTD           
             }
     
     
-    return relevantDates
+    return relevantDates['YTD Start']
     
     
 
