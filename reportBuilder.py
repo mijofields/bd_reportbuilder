@@ -10,6 +10,7 @@ import seaborn as sns
 import os
 from datetime import date
 from dateutil.relativedelta import relativedelta as rd
+import sys
 
 
 def makeDirs (indir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/data", outdir="C:/Users/mikeh/Desktop/Projects/bd_reportBuilder/reports"):
@@ -91,18 +92,21 @@ def MakeRelevantDates (endMonth, endYear, yearEnd=12):
         fiscalYEm1 = endDatePrior
         fiscalYEm2 = endDatePrior + rd(years=-1)
         displayYTD = False
+        ytdPeriod = str(0) + ' months'
         
     elif endMonth < yearEnd:
         fiscalYE = date(endYear-1, yearEnd, endOfMonth[yearEnd-1])
         fiscalYEm1 = fiscalYE + rd(years=-1)
         fiscalYEm2 = fiscalYE + rd(years=-2)
         displayYTD = True
+        ytdPeriod = str(abs(yearEnd - endMonth)) + ' months'
     
     else:
         fiscalYE = date(endYear, yearEnd, endOfMonth[yearEnd-1])
         fiscalYEm1 = fiscalYE + rd(years=-1)
         fiscalYEm2 = fiscalYE + rd(years=-2)
         displayYTD = True
+        ytdPeriod = str(abs(endMonth - yearEnd)) + ' months'
    
     
     
@@ -114,11 +118,13 @@ def MakeRelevantDates (endMonth, endYear, yearEnd=12):
             "FYE": fiscalYE,
             "FYE-1": fiscalYEm1,
             "FYE-2": fiscalYEm2,
-            "Display YTD": displayYTD           
+            "Display YTD": displayYTD,     
+            "YTD Period": ytdPeriod
             }
     
     
-    return relevantDates['YTD Start']
+    return relevantDates
+    print (relevantDates)
     
     
 
