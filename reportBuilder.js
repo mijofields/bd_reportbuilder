@@ -99,8 +99,6 @@ function initialData () {
 
         //end dates of YTD accounting for leap years
         if (Year % 4 == 0) {
-                leapYearEndMonth = leapYearEndOfMonth[YTDMonth-1];
-                priorYearEndMonth = endOfMonth[YTDMonth-1];
                 endDate = moment(new Date(Year, YTDMonth-1, leapYearEndOfMonth[YTDMonth-1])).format('YYYY-MM-DD');
                 endDatePrior = moment(new Date(Year-1, YTDMonth-1, endOfMonth[YTDMonth-1])).format('YYYY-MM-DD');
         } else if ((Year - 1) % 4 == 0) {
@@ -115,9 +113,12 @@ function initialData () {
         if (FYEMonth === 12) {
                 startMonth = 0;
                 startYear = Year;
+        } else if (YTDMonth < FYEMonth) {
+                startMonth = FYEMonth;
+                startYear = Year-1;
         } else {
                 startMonth = FYEMonth;
-                startYear = Year - 1;
+                startYear = Year;
         }
 
 

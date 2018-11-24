@@ -80,10 +80,12 @@ def MakeRelevantDates (endMonth, endYear, yearEnd=12):
     if yearEnd == 12:
         startMonth = 1
         startYear = endYear
-    else:
+    elif endMonth < yearEnd :
         startMonth = yearEnd + 1
         startYear = endYear - 1
-
+    else:
+        startMonth = yearEnd + 1
+        startYear = endYear
         
     startDate = date(startYear, startMonth, 1)
     startDatePrior = startDate + rd(years=-1)
