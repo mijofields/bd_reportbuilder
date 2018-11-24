@@ -91,6 +91,8 @@ function initialData () {
 
     function relevantDatesCalc (Year,YTDMonth,FYEMonth = 12) { 
     
+        Year = parseInt(Year);
+        YTDMonth = parseInt(YTDMonth);
 
         const endOfMonth = [31,28,31,30,31,30,31,31,30,31,30,31];
         const leapYearEndOfMonth = [31,29,31,30,31,30,31,31,30,31,30,31];
@@ -110,11 +112,11 @@ function initialData () {
         }
 
         // ytd period start dates
-        if (YTDMonth === 12) {
+        if (FYEMonth === 12) {
                 startMonth = 0;
                 startYear = Year;
         } else {
-                startMonth = YTDMonth;
+                startMonth = FYEMonth;
                 startYear = Year - 1;
         }
 
@@ -137,7 +139,7 @@ function initialData () {
             fiscalYEm1 = moment(fiscalYE).subtract(1, 'y').format('YYYY-MM-DD');
             fiscalYEm2 = moment(fiscalYE).subtract(2, 'y').format('YYYY-MM-DD');
             displayYTD = true;
-            ytdPeriod = Math.abs(FYEMonth - YTDMonth) + ' months';
+            ytdPeriod = (12 - FYEMonth) + YTDMonth;
 
 
         } else {
@@ -145,7 +147,7 @@ function initialData () {
             fiscalYEm1 = moment(fiscalYE).subtract(1, 'y').format('YYYY-MM-DD');
             fiscalYEm2 = moment(fiscalYE).subtract(2, 'y').format('YYYY-MM-DD');
             displayYTD = true;
-            ytdPeriod = Math.abs(YTDMonth - FYEMonth) + ' months';
+            ytdPeriod = YTDMonth-FYEMonth;
 
 
         }

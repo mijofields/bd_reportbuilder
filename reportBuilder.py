@@ -77,12 +77,13 @@ def MakeRelevantDates (endMonth, endYear, yearEnd=12):
         endDate = date(endYear, endMonth, endOfMonth[endMonth-1])
         endDatePrior = endDate + rd(years=-1)
     
-    if endMonth == 12:
+    if yearEnd == 12:
         startMonth = 1
         startYear = endYear
     else:
-        startMonth = endMonth + 1
+        startMonth = yearEnd + 1
         startYear = endYear - 1
+
         
     startDate = date(startYear, startMonth, 1)
     startDatePrior = startDate + rd(years=-1)
@@ -99,14 +100,14 @@ def MakeRelevantDates (endMonth, endYear, yearEnd=12):
         fiscalYEm1 = fiscalYE + rd(years=-1)
         fiscalYEm2 = fiscalYE + rd(years=-2)
         displayYTD = True
-        ytdPeriod = str(abs(yearEnd - endMonth)) + ' months'
+        ytdPeriod = str((12 - yearEnd) + endMonth) + ' months' 
     
     else:
         fiscalYE = date(endYear, yearEnd, endOfMonth[yearEnd-1])
         fiscalYEm1 = fiscalYE + rd(years=-1)
         fiscalYEm2 = fiscalYE + rd(years=-2)
         displayYTD = True
-        ytdPeriod = str(abs(endMonth - yearEnd)) + ' months'
+        ytdPeriod = str(endMonth - yearEnd) + ' months'
    
     
     
