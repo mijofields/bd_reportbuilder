@@ -128,7 +128,7 @@ function initialData () {
 
         // fiscal year ends
         if (YTDMonth == FYEMonth ){
-
+            console.log(`1`);
             fiscalYE = endDate;
             fiscalYEm1 = endDatePrior;
             fiscalYEm2 = moment(endDatePrior).subtract(1, 'y').format('YYYY-MM-DD');
@@ -136,7 +136,8 @@ function initialData () {
             ytdPeriod = 0;
 
         } else if (YTDMonth < FYEMonth){
-            fiscalYE = moment(new Date(Year-1, FYEMonth-1, endOfMonth[YTDMonth-1])).format('YYYY-MM-DD');
+            console.log(`2`);
+            fiscalYE = moment(new Date(Year-1, FYEMonth-1, endOfMonth[FYEMonth-1])).format('YYYY-MM-DD');
             fiscalYEm1 = moment(fiscalYE).subtract(1, 'y').format('YYYY-MM-DD');
             fiscalYEm2 = moment(fiscalYE).subtract(2, 'y').format('YYYY-MM-DD');
             displayYTD = true;
@@ -144,7 +145,8 @@ function initialData () {
 
 
         } else {
-            fiscalYE = moment (new Date(Year, FYEMonth-1, endOfMonth[YTDMonth-1])).format('YYYY-MM-DD');
+            console.log(`3`);
+            fiscalYE = moment (new Date(Year, FYEMonth-1, endOfMonth[FYEMonth-1])).format('YYYY-MM-DD');
             fiscalYEm1 = moment(fiscalYE).subtract(1, 'y').format('YYYY-MM-DD');
             fiscalYEm2 = moment(fiscalYE).subtract(2, 'y').format('YYYY-MM-DD');
             displayYTD = true;
